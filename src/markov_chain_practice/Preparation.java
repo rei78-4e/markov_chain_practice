@@ -7,7 +7,7 @@ import java.nio.file.Paths;
 public class Preparation {
     String[] input;
 
-    public void Ready(String path) throws Exception {
+    public Preparation(String path) throws Exception {
         try {
         this.input = this.Parse(this.get_input(path));
         } catch (Exception e) {
@@ -15,7 +15,11 @@ public class Preparation {
         }
     }
 
-    /// this function is possibily return error if failed read input file
+    public String[] get_input() {
+        return this.input;
+    }
+
+    /// this function is possibly return error if failed read input file
     String get_input(String path) throws Exception{
         var p = Paths.get(path);
         
@@ -25,15 +29,13 @@ public class Preparation {
         }
 
         try {
-            var lines = Files.readString(p);
-            return lines;
+            return Files.readString(p).replace(".", "");
         } catch (Exception e) {
            throw e; 
         }
     }
 
     String[] Parse(String input) throws Exception {
-        var words = input.split("");
-        return words;
+        return input.split(" ");
     }
 }

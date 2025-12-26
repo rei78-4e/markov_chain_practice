@@ -1,0 +1,200 @@
+The cat sits on the mat.
+The dog runs in the park.
+A bird flies over the house.
+The sun shines in the sky.
+A cat sleeps on the bed.
+The boy plays with a ball.
+The girl reads a long book.
+A teacher speaks in the class.
+The moon rises at night.
+The stars twinkle in the dark.
+A small bird sings a song.
+The brown dog barks at night.
+The fast car stops at the light.
+A young girl eats a green apple.
+The old man walks to the store.
+The blue water flows in the river.
+A red flower grows in the garden.
+The happy child laughs out loud.
+The cold wind blows in winter.
+A hungry cat wants some milk.
+The tall tree stands in the forest.
+A black bird sits on a fence.
+The smart student solves the problem.
+The busy baker makes fresh bread.
+A brave soldier fights for peace.
+The kind nurse helps the patient.
+The loud music plays in the room.
+A heavy rain falls on the roof.
+The bright lamp lights the desk.
+The warm soup tastes very good.
+A little mouse hides in the wall.
+The fast runner wins the race.
+The large ship sails on the sea.
+A golden key opens the door.
+The white clouds drift in the air.
+The green grass grows in spring.
+A yellow bus stops at the corner.
+The quiet library has many books.
+The strong horse pulls the cart.
+A clever fox jumps over the log.
+The soft pillow feels very nice.
+The sharp knife cuts the meat.
+A wild lion hunts in the grass.
+The sweet honey comes from bees.
+The dry desert has little water.
+A deep ocean hides many secrets.
+The lazy cat lies in the sun.
+The busy bee flies to the flower.
+A funny clown makes people laugh.
+The silver coin falls on the floor.
+The thin paper tears very easily.
+A thick ice covers the lake.
+The round ball rolls down the hill.
+The square box sits on the table.
+A long road leads to the city.
+The short pencil writes a note.
+The wide river has a bridge.
+A narrow path goes through the woods.
+The clean window lets in light.
+The dirty shirt needs a wash.
+A new friend visits the house.
+The lost dog finds his way home.
+The brave pilot flies the plane.
+A careful driver watches the road.
+The small town has a park.
+The big city never sleeps at night.
+A tired worker goes to bed.
+The early bird catches the worm.
+The late student enters the room.
+A beautiful garden has many roses.
+The ugly duckling becomes a swan.
+The rich man buys a big house.
+A poor child shares a toy.
+The young boy learns to swim.
+The old woman tells a story.
+A fresh milk is in the glass.
+The sour lemon makes me squint.
+The bitter coffee smells very strong.
+A salty sea has many fish.
+The spicy food burns my mouth.
+The heavy stone sinks in water.
+A light feather floats in air.
+The hard rock is on the ground.
+The soft fur feels like silk.
+A smooth stone lies on the beach.
+The rough skin needs some cream.
+The dark cave is very scary.
+A bright fire keeps us warm.
+The empty cup sits on the shelf.
+The full bucket is very heavy.
+The cheap pen works quite well.
+A dear friend writes a letter.
+The cheap watch tells the time.
+The expensive ring shines in light.
+A broken vase lies on the floor.
+The fixed car runs very smoothly.
+The open door lets in a breeze.
+A closed book stays on the desk.
+The first page has a picture.
+The last word ends the story.
+The sun rises in the morning.
+The moon sets behind the hill.
+A red bird sits on the branch.
+A blue bird flies to the nest.
+The big dog barks at the mailman.
+The small dog sleeps on the rug.
+A fast cat chases a small mouse.
+A slow turtle walks on the sand.
+The green leaf falls from the tree.
+The yellow leaf blows in the wind.
+A young boy jumps over the puddle.
+An old man sits on the bench.
+The happy girl dances in the rain.
+The sad boy cries in the room.
+A teacher writes on the white board.
+A student listens to the teacher.
+The cold rain turns into white snow.
+The hot fire burns the dry wood.
+A silver fish swims in the pond.
+A gold fish jumps out of water.
+The heavy rain makes the ground wet.
+The light snow covers the black roof.
+A hungry wolf howls at the moon.
+A tired horse rests in the stable.
+The busy cook chops the fresh onion.
+The lazy waiter drops the glass plate.
+A smart boy reads a science book.
+A quiet girl draws a pretty flower.
+The bright star guides the lost ship.
+The dark night hides the mountain peak.
+A large elephant walks in the mud.
+A tiny ant carries a bread crumb.
+The clean floor shines in the light.
+The dusty shelf holds many old toys.
+A sweet cake sits in the oven.
+A bitter tea stays in the cup.
+The strong bridge crosses the wide river.
+The weak fence breaks in the storm.
+A new car runs on the highway.
+An old bike leans against the wall.
+The wide sea looks very blue today.
+The narrow path leads to the forest.
+A brave girl climbs the high mountain.
+A scared cat hides under the chair.
+The sharp pen writes a long letter.
+The blunt tool breaks the hard rock.
+A wild horse runs across the field.
+A calm lake reflects the clear sky.
+The thick forest has many tall trees.
+The thin ice cracks under the feet.
+A deep hole stays in the garden.
+A shallow bowl holds some fresh fruit.
+The rich king wears a gold crown.
+The poor man eats a piece of bread.
+A young child plays with a kitten.
+An old dog rests near the door.
+The fresh air smells like spring flowers.
+The foul air comes from the factory.
+A loud bell rings at noon.
+A soft voice whispers a secret word.
+The empty box falls from the table.
+The full bag feels very heavy now.
+A cheap toy breaks in a day.
+An expensive watch keeps the exact time.
+The open window brings in fresh air.
+The locked gate keeps the people out.
+A long snake crawls in the grass.
+A short snake hides in the rock.
+The first runner gets a gold medal.
+The last runner feels very tired today.
+A beautiful song plays on the radio.
+A strange noise comes from the attic.
+The round moon looks like a coin.
+The square window shows the city lights.
+A hard worker earns a lot of money.
+A lazy student fails the easy test.
+The smart doctor heals the sick child.
+The kind dentist fixes the broken tooth.
+A wild tiger roams in the jungle.
+A domestic cat purrs on the sofa.
+The dry sand feels hot in summer.
+The wet grass feels cold in winter.
+A bright lamp stands in the corner.
+A dim candle burns on the table.
+The smooth ice is good for skating.
+The rough road is bad for driving.
+A white cloud looks like a sheep.
+A gray cloud brings the heavy rain.
+The lucky man finds a silver coin.
+The unlucky man loses his house keys.
+A clever girl solves the hard puzzle.
+A silly boy tells a funny joke.
+The thick book has many interesting facts.
+The thin book has many colorful pictures.
+A wide street has many busy shops.
+A narrow lane has many old houses.
+The golden sun warms the cold earth.
+The silver moon cools the night air.
+A happy family lives in that house.
+A lonely person walks in the park.
