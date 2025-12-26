@@ -7,9 +7,10 @@ import java.nio.file.Paths;
 public class Preparation {
     String[] input;
 
-    public Preparation(String path) throws Exception {
+    public Preparation(String[] p) throws Exception {
         try {
-        this.input = this.Parse(this.get_input(path));
+        this.input = this.Parse(this.get_some_input(p));
+        System.out.printf("loaded %d words\n\n", this.input.length);
         } catch (Exception e) {
             throw e;
         }
@@ -17,6 +18,15 @@ public class Preparation {
 
     public String[] get_input() {
         return this.input;
+    }
+
+    String get_some_input(String[] pathes) throws Exception {
+        String res = new String();
+        for (var p : pathes) {
+            res += get_input(p);
+        }
+
+        return res;
     }
 
     /// this function is possibly return error if failed read input file
