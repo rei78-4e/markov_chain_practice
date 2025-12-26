@@ -19,3 +19,9 @@
     - from_Leaning()
     - generate()
     - print()
+
+## Feature Works
+
+- 読み込む単語数の増加
+- 日本語などの多言語対応
+- 
