@@ -9,11 +9,8 @@ public class Generate {
     // <HashMap<現在の単語, HashMap<次の単語, 出現確率>>>
     HashMap<String, HashMap<String, Probability>> ProbabilityMap;
 
-    
-
     // 乱数生成のため
     static final Random RANDOM = new Random();
-
     /**
      * 
      * @param leaned_data: 出現回数解析ずみのHashMap

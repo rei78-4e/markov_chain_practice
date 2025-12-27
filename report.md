@@ -212,7 +212,19 @@ public class Probability {
 
 ## Eclipse上でのソースコード一覧
 
+![main.java-1](./resource/codes/main-1.png)
+![main.java-2](./resource/codes/main-2.png)
+![Preparation.java](./resource/codes/pre.png)
+![Leaning.java](./resource/codes/leaning.png)
+![Generate.java-1](./resource/codes/gene1.png)
+![Generate.java-2](./resource/codes/gene2.png)
+![Probability.java](./resource/codes/probab.png)
+![InvalidInput.java](./resource/codes/erros.png)
+
 ## Eclipse上での実行例
+
+![run-result-1](./resource/result/run1.png)
+![run-result-2](./resource/result/run2.png)
 
 ## 全体的な工夫点
 

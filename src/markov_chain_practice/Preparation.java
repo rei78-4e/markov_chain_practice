@@ -1,5 +1,4 @@
-// 解析前のデータ処理
-// 入力ファイルの読み込みと単語分割を行う
+// 解析前のデータ処理 入力ファイルの読み込みと単語分割を行う
 
 package markov_chain_practice;
 
@@ -11,7 +10,6 @@ public class Preparation {
     String[] input;
 
     /**
-     * 
      * @param p: ソースファイルのパスリスト
      * @throws Exception
      */
@@ -36,13 +34,11 @@ public class Preparation {
         for (var p : pathes) {
             res += get_input(p);
         }
-
         return res;
     }
 
     /**
      * this function is possibly return error if failed read input file
-     * 
      * @param path: 入力ファイルパス
      * @return ファイル内容の文字列
      */
@@ -63,7 +59,6 @@ public class Preparation {
     }
 
     /**
-     * 
      * @param input: 入力値
      * @return: spaceで分割した値
      */
