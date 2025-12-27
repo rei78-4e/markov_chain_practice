@@ -3,7 +3,7 @@ package markov_chain_practice;
 import java.util.HashMap;
 
 public class Leaning {
-    // HashMao<現在の単語, HashMap<次の単語, 出現回数>>
+    // HashMap<現在の単語, HashMap<次の単語, 出現回数>>
     HashMap<String, HashMap<String, Integer>> WordsMap;
 
     // 初期化と関数呼び出し

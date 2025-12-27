@@ -2,6 +2,7 @@ package markov_chain_practice;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class Main {
@@ -18,7 +19,10 @@ public class Main {
 				lst.add(getTestDataSetPathSf());
 			} else { // noならソースパスの入力を促す
 				System.out.printf("please input souce path>");
-				lst.add(sc.next());
+				// ,で複数のパスを区切る
+				var input = sc.next().split(",");
+				// lst(空ではあるけど)とinputを結合
+				Collections.addAll(lst, input);
 			}
 			// Preparationにてデータの取得と単語へのパースを行う
 			var parsed_data = new Preparation(lst.toArray(new String[0]));
