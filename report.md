@@ -5,31 +5,20 @@ date: \today
 documentclass: ltjsarticle
 classoption: a4paper
 geometry:
-  - margin=2.5cm
+  - margin=2cm
 pdf-engine: lualatex
+toc: true
+toc-title: 目次
 header-includes:
   - \usepackage[no-math, no-prompts]{luatexja-fontspec}
+  - \usepackage{float}
+  - \floatplacement{figure}{H}
+  # コードブロックの装飾設定
+  - \usepackage{tcolorbox}
+  - \renewenvironment{Shaded}{\begin{tcolorbox}[colback=gray!5, boxrule=0.5pt, colframe=gray!70, left=5pt, right=5pt, top=5pt, bottom=5pt]}{\end{tcolorbox}}
 ---
 
 # Markov chain practice java implement
-
-## 目次
-
-- [Markov chain practice java implement](#markov-chain-practice-java-implement)
-  - [目次](#目次)
-  - [概要](#概要)
-  - [プログラム解説](#プログラム解説)
-    - [Main.java](#mainjava)
-    - [Preparation.java](#preparationjava)
-    - [Leaning.java](#leaningjava)
-    - [Generate.java](#generatejava)
-      - [次単語の出現確率の計算について](#次単語の出現確率の計算について)
-    - [Probability.java](#probabilityjava)
-  - [Eclipse上でのソースコード一覧](#eclipse上でのソースコード一覧)
-  - [Eclipse上での実行例](#eclipse上での実行例)
-  - [全体的な工夫点](#全体的な工夫点)
-  - [Feature Works](#feature-works)
-
 
 ## 概要
 
@@ -41,13 +30,14 @@ header-includes:
 
 *下記の図はgeminiにソースコードを読ませて生成した図式である。
 
-![process of this project](./process.png)
+![process of this project](./process.png){height=10cm}
 
 ### Main.java
 
 7行目から22行目において学習用データの決定を行なっている。デフォルトで用意したセットを使うかどうかをユーザーに選択させるプロンプトを行い、Scannerで結果を取得する。ユーザー指定の場合は`,`でパスを区切って入力する。
 
-```java: Main.java
+`Main.java`
+```java
 public class Main {
 	public static void main(String[] args) {
 		// Scannerと全体でのエラーハンドリングのためtry
@@ -63,7 +53,8 @@ public class Main {
 
 ここでの工夫点として現在の処理についての説明を出力するようにしている。今回のケースでは処理が高速に終了するため、あまり効果はないが学習データの増大や機能増加によってユーザーの待ち時間が増えた際に、処理が進んでいるのかの確認に効果的であると考えたためである。
 
-```java: Main.java
+`Main.java`
+```java
 // Preparationにてデータの取得と単語へのパースを行う
 var parsed_data = new Preparation(lst.toArray(new String[0]));
 
@@ -80,7 +71,8 @@ System.out.printf("caluculated\n");
 
 31行目から51行目にかけては、実際の出力を行っている。生成する単語数をユーザーに入力してもらい、それに基づいて`Gemerate` Classのメソッドである`loopShow()`を用いて指定回数分の生成と表示を行っている。
 
-```java: Main.java
+`Main.java`
+```java
 // 何単語分生成するかを質問
 System.out.printf("\nhow long do you want to generate?>");
 var i = sc.nextInt();
@@ -97,13 +89,15 @@ caled.loopShow("The", i);
 
 54行目以降はエラーハンドリングとして上記の処理で発生した例外をすべてcatchしてそのままエラーとして表示している。今回はリトライで成功すするような処理はないため、そのまま`Exit(1)`として終了する。
 
-```java: Main.java
+`Main.java`
+```java
 catch (Exception e) 
 ```
 
 56行目以降ではデフォルトの学習データのパスの定義などを行っている。現在は私の環境でしか動作しないため再現性を高めるためにはもっと汎用的なパスの生成を行う必要がある。
 
-```java: Main.java
+`Main.java`
+```java
 static String getTestDataSetPath() 
 ```
 
@@ -113,7 +107,8 @@ static String getTestDataSetPath()
 
 Preparationのコンストラクタ。`get_input()`と`get_some_input()`をまとめて実行する実質的なラッパー関数。
 
-```java: Preparation.java
+`Preparation.java`
+```java
 public Preparation(String[] p) throws Exception {
     try {
         this.input = this.Parse(this.get_some_input(p));
@@ -126,7 +121,8 @@ public Preparation(String[] p) throws Exception {
 
 1つのファイルの内容を取得する関数。ファイルの存在確認も行う。
 
-```java: Preparation.java
+`Preparation.java`
+```java
 String get_input(String path) throws Exception {
     var p = Paths.get(path);
 
@@ -146,6 +142,7 @@ String get_input(String path) throws Exception {
 
 `get_input()`を用いて、複数のファイルをパスのリストから取得する関数。これにより簡単に複数のファイルから学習を行える。
 
+`Preparation.java`
 ```java
 String get_some_input(String[] pathes) throws Exception {
     String res = new String();
@@ -159,6 +156,7 @@ String get_some_input(String[] pathes) throws Exception {
 
 シンプルにStringのメソッドでスペース区切りにしてパースを行う関数。日本語対応などを行うならばらここで文法的な解析を行うなど、モジュール性を意識した。
 
+`Preparation.java`
 ```java
 String[] Parse(String input) {
     return input.split(" ");
@@ -169,13 +167,15 @@ String[] Parse(String input) {
 
 `HashMap<現在の単語, HashMap<次の単語, 出現回数>>`となるようにカウントを行った。
 
-```java: Leaning.java
+`Leaning.java`
+```java
 HashMap<String, HashMap<String, Integer>> WordsMap;
 ```
 
 `collect_analyzer()`関数は単語A(`words[i]`)に対して次の単語(`words[i+1]`)を登録,カウントしていく関数である。`.merge()`を用いることで、容易に初期値とインクリメントを実現できる。
 
-```java: Leaning.java
+`Leaning.java`
+```java
 void collect_analyzer(String[] words) {
     for (int i = 0; i < words.length - 1; i++) {
         this.WordsMap.computeIfAbsent(words[i], k -> new HashMap<>()).merge(words[i + 1].trim(), 1, Integer::sum);
@@ -192,6 +192,7 @@ HashMap<String, HashMap<String, Probability>> ProbabilityMap;
 ```
 
 #### 次単語の出現確率の計算について
+
 まず、現在の単語をA, 次に来たことのある単語とその回数のペアをBとする。BのペアはAに紐付いてベクトルのように保存されている。
 そこからAにひも付いたBの単語を総数(重複含む)を数えて、それが次の単語の確率の母数となる。その中で各単語が何%の確率で来るかが回数として保存されているため、Probabilityを用いて、分数として変換する。
 
@@ -201,7 +202,8 @@ HashMap<String, HashMap<String, Probability>> ProbabilityMap;
 
 分母と分子をメンバー変数として保持することで、分数のように確率を保存できるようになっている。
 
-```java: Probability.java
+`Probability.java`
+```java
 public class Probability {
     // 分子
     long num;
@@ -212,19 +214,26 @@ public class Probability {
 
 ## Eclipse上でのソースコード一覧
 
-![main.java-1](./resource/codes/main-1.png)
-![main.java-2](./resource/codes/main-2.png)
-![Preparation.java](./resource/codes/pre.png)
-![Leaning.java](./resource/codes/leaning.png)
-![Generate.java-1](./resource/codes/gene1.png)
-![Generate.java-2](./resource/codes/gene2.png)
-![Probability.java](./resource/codes/probab.png)
-![InvalidInput.java](./resource/codes/erros.png)
+![main.java-1](./resource/codes/main-1.png){height=10cm}
+
+![main.java-2](./resource/codes/main-2.png){height=10cm}
+
+![Preparation.java](./resource/codes/pre.png){height=10cm}
+
+![Leaning.java](./resource/codes/leaning.png){height=10cm}
+
+![Generate.java-1](./resource/codes/gene1.png){height=10cm}
+
+![Generate.java-2](./resource/codes/gene2.png){height=10cm}
+
+![Probability.java](./resource/codes/probab.png){height=10cm}
+
+![InvalidInput.java](./resource/codes/erros.png){height=10cm}
 
 ## Eclipse上での実行例
 
-![run-result-1](./resource/result/run1.png)
-![run-result-2](./resource/result/run2.png)
+![run-result-1](./resource/result/run1.png){height=10cm}
+![run-result-2](./resource/result/run2.png){height=10cm}
 
 ## 全体的な工夫点
 
