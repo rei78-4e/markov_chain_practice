@@ -2,12 +2,12 @@ package markov_chain_practice;
 
 import java.util.HashMap;
 
-public class Leaning {
+public class Learning {
     // HashMap<現在の単語, HashMap<次の単語, 出現回数>>
     HashMap<String, HashMap<String, Integer>> WordsMap;
 
     // 初期化と関数呼び出し
-    public Leaning(String[] input) {
+    public Learning(String[] input) {
         this.WordsMap = new HashMap<>();
         this.collect_analyzer(input);
     }

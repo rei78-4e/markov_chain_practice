@@ -17,7 +17,7 @@ public class Generate {
      * 
      * @param leaned_data: 出現回数解析ずみのHashMap
      */
-    public Generate(Leaning leaned_data) {
+    public Generate(Learning leaned_data) {
         // 初期化
         this.ProbabilityMap = new HashMap<>();
 

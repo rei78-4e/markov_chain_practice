@@ -66,7 +66,7 @@ public class Main {
 			System.out.printf("[PROCESS]\n");
 			System.out.printf("  - Analyzing loaded text...");
 			// Leaningにて各単語の出現回数をカウントしてベクトル的に格納
-			var leaned_data = new Leaning(parsed_data.get_input());
+			var leaned_data = new Learning(parsed_data.get_input());
 			System.out.printf(" [DONE]\n");
 
 			// Generateにて出現回数から次単語の出現確率を各ベクトルに変換
