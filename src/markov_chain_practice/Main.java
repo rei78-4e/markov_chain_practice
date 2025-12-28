@@ -1,5 +1,7 @@
 package markov_chain_practice;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -7,6 +9,7 @@ import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class Main {
 	public static void main(String[] args) {
@@ -24,6 +27,7 @@ public class Main {
 			System.out.println("  1: [NORMAL] \t - Starndard data set");
 			System.out.println("  2: [SF] \t - SF dataset");
 			System.out.println("  3: [SHIKA] \t - shikanoko special dataset");
+			System.out.println("  4: [NORMAL2] \t - Nature and Environment");
 			System.out.println("  [CUSTOM] \t - custom dataset path (numbers prohibited)");
 			System.out.printf("\nSelect number (or input path)> ");
 
@@ -31,20 +35,25 @@ public class Main {
 
 			// 入力値がintに変換出来ればデフォルトのデータセットを選択
 			// 失敗すれば入力をそのままパスとして取り込む
-			var lst = parseOpt(input)
+			var lst = parse_option(input)
 					.map(n -> {
-						return switch (n) {
-							case 1 -> List.of(getTestDataSetPathSf());
-							case 2 -> List.of(getTestDataSetPathSf());
-							case 3 -> List.of(getTestDateSetShika());
-							default -> List.of(getTestDataSetPath(), getTestDataSetPathSf(), getTestDateSetShika());
-						};
-					}).orElse(List.of(input));
+						try {
+							return switch (n) {
+								case 1 -> List.of(Path.of(default_pare().toString(), "normal.txt"));
+								case 2 -> List.of(Path.of(default_pare().toString(), "sf.txt"));
+								case 3 -> List.of(Path.of(default_pare().toString(), "shika.txt"));
+								case 4 -> List.of(Path.of(default_pare().toString(), "normal2.txt"));
+								default -> get_all_dataset_path();
+							};
+						} catch (Exception e) {
+							throw new RuntimeException(e);
+						}
+					}).orElse(List.of(Path.of(input)));
 
 			System.out.printf("\n-----------------------------------------\n");
 			System.out.printf("[INFO] Loading dataset...\n");
 			// Preparationにてデータの取得と単語へのパースを行う
-			var parsed_data = new Preparation(lst.toArray(new String[0]));
+			var parsed_data = new Preparation(lst.toArray(Path[]::new));
 			var loaded_num = parsed_data.LoadedWordsNum();
 			var loaded_path_lst = parsed_data.LoadedPathList();
 			loaded_path_lst.forEach(ip -> {
@@ -85,7 +94,7 @@ public class Main {
 			System.out.printf("Seed word (\"***\" or not found = random)> ");
 			var in_seed = sc.nextLine();
 			String seed;
-			if ((in_seed.isEmpty()) ||  in_seed.equals("***") || (!caled.checkExistWord(in_seed))) {
+			if ((in_seed.isEmpty()) || in_seed.equals("***") || (!caled.checkExistWord(in_seed))) {
 				seed = caled.randomStart();
 			} else {
 				seed = in_seed;
@@ -93,7 +102,7 @@ public class Main {
 
 			System.out.printf("How many generations?>");
 			var in_num = sc.nextLine();
-			var nn = parseOpt(in_num)
+			var nn = parse_option(in_num)
 					.map(n -> {
 						return n;
 					})
@@ -101,9 +110,10 @@ public class Main {
 			sc.close();
 
 			for (int j = 1; j < nn + 1; j++) {
-				System.out.println();
+				System.out.printf("\n[RESULT]\n-----------------------------------------\n\n");
 				// iは生成する単語数
 				var gened_words_count = caled.loopShow(seed, i, 0);
+				System.out.printf("\n-----------------------------------------\n");
 
 				System.out.printf(
 						"\n[STATUS]\n  - Words generated: %d\n  - Count: %d\n  - Status: Success\n  - Seed word: \"%s\"\n",
@@ -117,7 +127,7 @@ public class Main {
 		}
 	}
 
-	static Optional<Integer> parseOpt(String s) {
+	static Optional<Integer> parse_option(String s) {
 		try {
 			return Optional.of(Integer.parseInt(s));
 		} catch (Exception e) {
@@ -125,23 +135,16 @@ public class Main {
 		}
 	}
 
-	// for test
-	static String getTestDataSetPath() {
-		var p = Path.of(default_pare(), "dataset.txt");
-		return p.toString();
+	static List<Path> get_all_dataset_path() throws IOException {
+		var p = default_pare();
+		try (Stream<Path> stream = Files.list(p)) {
+			List<Path> path_list = stream.filter(f -> !Files.isDirectory(f)).sorted()
+					.collect(Collectors.toList());
+			return path_list;
+		}
 	}
 
-	static String getTestDataSetPathSf() {
-		var p = Path.of(default_pare(), "dataset_sf.txt");
-		return p.toString();
-	}
-
-	static String getTestDateSetShika() {
-		var p = Path.of(default_pare(), "shika.txt");
-		return p.toString();
-	}
-
-	static String default_pare() {
-		return Path.of(Paths.get("").toAbsolutePath().toString(), "dataset").toString();
+	static Path default_pare() {
+		return Path.of(Paths.get("").toAbsolutePath().toString(), "dataset");
 	}
 }

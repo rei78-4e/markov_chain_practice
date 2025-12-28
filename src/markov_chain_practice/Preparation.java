@@ -4,9 +4,7 @@ package markov_chain_practice;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-
 
 public class Preparation {
     // 分割された単語列
@@ -17,7 +15,7 @@ public class Preparation {
      * @param p: ソースファイルのパスリスト
      * @throws Exception
      */
-    public Preparation(String[] p) throws Exception {
+    public Preparation(Path[] p) throws Exception {
         try {
             this.loaded_path_lst = new ArrayList<Path>();
             this.input = this.Parse(this.get_some_input(p));
@@ -41,7 +39,7 @@ public class Preparation {
     /**
      * 複数ファイルからの入力を結合して返す
      */
-    String get_some_input(String[] pathes) throws Exception {
+    String get_some_input(Path[] pathes) throws Exception {
         String res = new String();
         for (var p : pathes) {
             res += get_input(p);
@@ -55,8 +53,7 @@ public class Preparation {
      * @param path: 入力ファイルパス
      * @return ファイル内容の文字列
      */
-    String get_input(String path) throws Exception {
-        var p = Paths.get(path);
+    String get_input(Path p) throws Exception {
 
         // ファイルの存在確認
         if (!Files.isRegularFile(p)) {
@@ -65,7 +62,9 @@ public class Preparation {
 
         // Io操作に失敗する可能性があるため
         try {
-            var s = Files.readString(p).replaceAll("[\\p{Punct}&&[^ ]|\\p{IsP}]", "");
+            var s = Files.readString(p)
+                    .replaceAll(" {2,}", " ")
+                    .replaceAll("(?m)^[ \\t]*\\r?\\n", "");
             this.loaded_path_lst.add(p);
             return s;
         } catch (Exception e) {
