@@ -35,145 +35,121 @@ header-includes:
 
 ### Main.java
 
-7行目から22行目において学習用データの決定を行なっている。デフォルトで用意したセットを使うかどうかをユーザーに選択させるプロンプトを行い、Scannerで結果を取得する。ユーザー指定の場合は`,`でパスを区切って入力する。
+16行目から51行目において学習用データの決定を行なっている。デフォルトで用意したセット(0~4)を使うかどうかをユーザーに選択させるプロンプトを行い、Scannerで結果を取得する。数字以外を入力した場合は、その文字列をファイルパスとして直接読み込む。
 
 `Main.java`
 ```java
-public class Main {
-	public static void main(String[] args) {
-		// Scannerと全体でのエラーハンドリングのためtry
-		try {
-			// 学習データのファイルパス指定。デフォルトを使用する場合と自分で用意するかを選択
-			ArrayList<String> lst = new ArrayList<String>();
-			System.out.printf("do you use default leaning source? (y/n)> ");
-            // 省略
-        }
+var input = sc.nextLine();
+
+// 入力値がintに変換出来ればデフォルトのデータセットを選択
+// 失敗すれば入力をそのままパスとして取り込む
+var lst = parse_option(input)
+        .map(n -> {
+            try {
+                return switch (n) {
+                    case 1 -> List.of(Path.of(default_pare().toString(), "normal.txt"));
+                    case 2 -> List.of(Path.of(default_pare().toString(), "sf.txt"));
+                    case 3 -> List.of(Path.of(default_pare().toString(), "shika.txt"));
+                    case 4 -> List.of(Path.of(default_pare().toString(), "normal2.txt"));
+                    default -> get_all_dataset_path();
+                };
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }).orElse(List.of(Path.of(input)));
 ```
 
-27行目から38行目において`Preparation`, `Leaning`, `Generate` Classを用いて、入力データの解析を行なっている。解析についての詳細は各Classの解説を参照。
+53行目から75行目において`Preparation`, `Leaning`, `Generate` Classを用いて、入力データの解析を行なっている。解析についての詳細は各Classの解説を参照。
 
-ここでの工夫点として現在の処理についての説明を出力するようにしている。今回のケースでは処理が高速に終了するため、あまり効果はないが学習データの増大や機能増加によってユーザーの待ち時間が増えた際に、処理が進んでいるのかの確認に効果的であると考えたためである。
+現在の処理状況を[INFO], [OK], [PROCESS]などのタグと共に詳細に出力するようにし、読み込み済みのパス一覧や単語数を確認できるようにしている。
 
 `Main.java`
 ```java
 // Preparationにてデータの取得と単語へのパースを行う
-var parsed_data = new Preparation(lst.toArray(new String[0]));
+var parsed_data = new Preparation(lst.toArray(Path[]::new));
+var loaded_num = parsed_data.LoadedWordsNum();
+var loaded_path_lst = parsed_data.LoadedPathList();
 
-System.out.printf("analyzing...\n");
-// Leaningにて各単語の出現回数をカウントしてベクトル的に格納
+// ... 省略 ...
+
+// Leaningにて各単語の出現回数をカウント
 var leaned_data = new Leaning(parsed_data.get_input());
-System.out.printf("analyzed\n");
 
 // Generateにて出現回数から次単語の出現確率を各ベクトルに変換
-System.out.printf("caluculating...\n");
 var caled = new Generate(leaned_data);
-System.out.printf("caluculated\n");
 ```
 
-31行目から51行目にかけては、実際の出力を行っている。生成する単語数をユーザーに入力してもらい、それに基づいて`Gemerate` Classのメソッドである`loopShow()`を用いて指定回数分の生成と表示を行っている。
+82行目から121行目にかけては、実際の出力を行っている。生成する単語数、開始単語(Seed)、および生成回数をユーザーに入力してもらい、それに基づいて指定回数分の文生成を行っている。Seedが見つからない場合や"***"が入力された場合はランダムな単語から開始する。
 
 `Main.java`
 ```java
-// 何単語分生成するかを質問
-System.out.printf("\nhow long do you want to generate?>");
-var i = sc.nextInt();
-// 入力はこれ以降ないのでここでclose()
-sc.close();
+// Config入力
+System.out.printf("Seed word ("***" or not found = random)> ");
+var in_seed = sc.nextLine();
 
-// 出力のセパレータ
-System.out.printf("\n");
+// ... Seedの決定ロジック ...
 
-// スタートはTheで固定
-// iは生成する単語数
-caled.loopShow("The", i);
+System.out.printf("How many generations?>");
+var in_num = sc.nextLine();
+
+// 生成ループ
+for (int j = 1; j < nn + 1; j++) {
+    // iは生成する単語数
+    var gened_words_count = caled.loopShow(seed, i, 0);
+    // ... ステータス表示 ...
+}
 ```
 
-54行目以降はエラーハンドリングとして上記の処理で発生した例外をすべてcatchしてそのままエラーとして表示している。今回はリトライで成功すするような処理はないため、そのまま`Exit(1)`として終了する。
-
-`Main.java`
-```java
-catch (Exception e) 
-```
-
-56行目以降ではデフォルトの学習データのパスの定義などを行っている。現在は私の環境でしか動作しないため再現性を高めるためにはもっと汎用的なパスの生成を行う必要がある。
-
-`Main.java`
-```java
-static String getTestDataSetPath() 
-```
+124行目以降はエラーハンドリングとして例外をcatchし、[ERROR]タグと共に内容を表示して`Exit(1)`で終了する。
 
 ### Preparation.java
 
-パスから実際のファイルの内容の取得と、実際の解析前の文字列の単語分割を行う。
-
-Preparationのコンストラクタ。`get_input()`と`get_some_input()`をまとめて実行する実質的なラッパー関数。
+パスからファイル内容の取得と、正規表現を用いた不要な空白や空行の除去、および単語分割を行う。
 
 `Preparation.java`
 ```java
-public Preparation(String[] p) throws Exception {
+public Preparation(Path[] p) throws Exception {
     try {
+        this.loaded_path_lst = new ArrayList<Path>();
         this.input = this.Parse(this.get_some_input(p));
-        System.out.printf("loaded %d words\n\n", this.input.length);
     } catch (Exception e) {
         throw e;
     }
 }
 ```
 
-1つのファイルの内容を取得する関数。ファイルの存在確認も行う。
+1つのファイルの内容を取得し、テキストのクリーニングを行う関数。
 
 `Preparation.java`
 ```java
-String get_input(String path) throws Exception {
-    var p = Paths.get(path);
-
-    // ファイルの存在確認
+String get_input(Path p) throws Exception {
     if (!Files.isRegularFile(p)) {
         throw new InvalidInput(String.format("invalid input: %s", p));
     }
-
-    // Io操作に失敗する可能性があるため
     try {
-        return Files.readString(p).replace(".", "");
+        var s = Files.readString(p)
+                .replaceAll(" {2,}", " ")
+                .replaceAll("(?m)^[ \t]*\r?\n", "");
+        this.loaded_path_lst.add(p);
+        return s;
     } catch (Exception e) {
         throw e;
     }
 }
 ```
 
-`get_input()`を用いて、複数のファイルをパスのリストから取得する関数。これにより簡単に複数のファイルから学習を行える。
-
-`Preparation.java`
-```java
-String get_some_input(String[] pathes) throws Exception {
-    String res = new String();
-    for (var p : pathes) {
-        res += get_input(p);
-    }
-
-    return res;
-}
-```
-
-シンプルにStringのメソッドでスペース区切りにしてパースを行う関数。日本語対応などを行うならばらここで文法的な解析を行うなど、モジュール性を意識した。
+`\s+`（1つ以上の空白文字）で分割することで、より堅牢な単語パースを実現している。
 
 `Preparation.java`
 ```java
 String[] Parse(String input) {
-    return input.split(" ");
+    return input.split("\\s+");
 }
 ```
 
 ### Leaning.java
 
-`HashMap<現在の単語, HashMap<次の単語, 出現回数>>`となるようにカウントを行った。
-
-`Leaning.java`
-```java
-HashMap<String, HashMap<String, Integer>> WordsMap;
-```
-
-`collect_analyzer()`関数は単語A(`words[i]`)に対して次の単語(`words[i+1]`)を登録,カウントしていく関数である。`.merge()`を用いることで、容易に初期値とインクリメントを実現できる。
+`HashMap<現在の単語, HashMap<次の単語, 出現回数>>`となるようにカウントを行う。
 
 `Leaning.java`
 ```java
@@ -186,34 +162,65 @@ void collect_analyzer(String[] words) {
 
 ### Generate.java
 
-上記の`HashMap<現在の単語, HashMap<次の単語, 出現回数>>`を出現回数と母数より確率として計算する処理を行う。分数を扱う`Probability` Classについてはそちらの解説を参照。小数点数を用いるとバグの温床となるため、今回は独自に分数として扱えるようなClassを実装した。
+出現回数から確率（`Probability`）を計算し、乱数を用いて次単語を選択する。
 
+#### 次単語の生成ロジック
+
+`Next(String k)`関数では、現在の単語`k`に紐づく次単語候補の確率分布から、0から分母（総出現回数）までの乱数を生成し、累積確率に基づいて次の単語を決定する。
+
+`Generate.java`
 ```java
-HashMap<String, HashMap<String, Probability>> ProbabilityMap;
+public String Next(String k) {
+    var start = this.ProbabilityMap.get(k);
+    if (start == null) return ".";
+    
+    var w = get_sum(start);
+    var pivot = RANDOM.nextLong(w);
+
+    var cSum = 0L;
+    for (Entry<String, Probability> p : start.entrySet()) {
+        cSum += p.getValue().get_num();
+        if (pivot < cSum) return p.getKey();
+    }
+    return ".";
+}
 ```
 
-#### 次単語の出現確率の計算について
+また、再帰的に`loopShow`を呼び出すことで指定された長さの文を生成する。
 
-まず、現在の単語をA, 次に来たことのある単語とその回数のペアをBとする。BのペアはAに紐付いてベクトルのように保存されている。
-そこからAにひも付いたBの単語を総数(重複含む)を数えて、それが次の単語の確率の母数となる。その中で各単語が何%の確率で来るかが回数として保存されているため、Probabilityを用いて、分数として変換する。
-
-具体例として`jumps`の次の単語として記録されたのは`over`, `over`, `out`であった。この際、母数は3, `over`の確率は2, `out`の確率は1である。それらは2/3, 1/3として`Generate` Classの`ProbabilityMap`として変換される。
+`Generate.java`
+```java
+public Integer loopShow(String k, int c, int cc) {
+    if (c <= 0 || k.equals(".")) {
+        System.out.printf(".\n");
+        return cc;
+    }
+    System.out.printf("%s ", k);
+    return loopShow(this.Next(k), c - 1, cc + 1);
+}
+```
 
 ### Probability.java
 
-分母と分子をメンバー変数として保持することで、分数のように確率を保存できるようになっている。
+分母と分子を保持し、`toString()`で分数形式のデバッグ出力を提供する。
 
 `Probability.java`
 ```java
 public class Probability {
-    // 分子
-    long num;
-    // 分母
-    long den;
+    long num; // 分子
+    long den; // 分母
+
+    public Probability(long n, long d) {
+        this.num = n;
+        this.den = d;
+    }
+    // ... getter ...
 }
 ```
 
 ## Eclipse上でのソースコード一覧
+
+*注: コードの更新に伴い、以下のスクリーンショットの内容は現在の最新コードと一部異なる場合があります。
 
 ![main.java-1](./resource/codes/main-1.png){height=10cm}
 
@@ -238,12 +245,13 @@ public class Probability {
 
 ## 全体的な工夫点
 
-- 処理のレイヤーを細かく分けることで今後の変更を行いやすくなった
-    - 例えば単語の分割方法を変更する際には`Preparation.java`の処理変更すれば問題なく更新可能
-- データ構造に`HashMap`を用いることで高速な処理を行えるようにした
+- **UI/UXの改善**: 処理ステップを明示し、詳細なステータスレポートを表示するようにした。
+- **堅牢なパース**: 正規表現(`\s+`, `replaceAll`)を用いることで、入力データのフォーマットの揺れに強くなった。
+- **柔軟なデータ入力**: メニュー選択と直接パス入力の両方に対応し、`java.nio.file.Path`を用いることでプラットフォーム間の互換性を高めた。
+- **文生成の拡張性**: 開始単語の指定や複数文の同時生成に対応した。
 
 ## Feature Works
 
-- 確率を計算する単語数の増加
-- 日本語などの多言語対応
-- 全体的にOOPらしくない、FP寄りな記述になっている
+- N-gram (2階以上のマルコフ連鎖) への対応
+- 日本語などの形態素解析を必要とする言語への対応
+- 文生成終了条件の改善（句点での停止など）
