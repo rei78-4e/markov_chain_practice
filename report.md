@@ -1,6 +1,7 @@
 ---
 title: "Markov chain practice java implement"
-author: "内山"
+subtitle: "Version: 0.1.0"
+author: "内山 航平 25A4111026"
 date: \today
 documentclass: ltjsarticle
 classoption: a4paper
