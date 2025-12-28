@@ -27,3 +27,6 @@ hs_err_pid*
 replay_pid*
 
 # from https://github.com/github/gitignore/blob/main/Java.gitignore
+
+**/.DS_Store
+**/.patch
