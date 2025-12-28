@@ -3,11 +3,15 @@
 package markov_chain_practice;
 
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+
 
 public class Preparation {
     // 分割された単語列
     String[] input;
+    ArrayList<Path> loaded_path_lst;
 
     /**
      * @param p: ソースファイルのパスリスト
@@ -15,11 +19,19 @@ public class Preparation {
      */
     public Preparation(String[] p) throws Exception {
         try {
+            this.loaded_path_lst = new ArrayList<Path>();
             this.input = this.Parse(this.get_some_input(p));
-            System.out.printf("loaded %d words\n\n", this.input.length);
         } catch (Exception e) {
             throw e;
         }
+    }
+
+    public Integer LoadedWordsNum() {
+        return this.input.length;
+    }
+
+    public ArrayList<Path> LoadedPathList() {
+        return this.loaded_path_lst;
     }
 
     public String[] get_input() {
@@ -39,6 +51,7 @@ public class Preparation {
 
     /**
      * this function is possibly return error if failed read input file
+     * 
      * @param path: 入力ファイルパス
      * @return ファイル内容の文字列
      */
@@ -52,7 +65,9 @@ public class Preparation {
 
         // Io操作に失敗する可能性があるため
         try {
-            return Files.readString(p).replace(".", "");
+            var s = Files.readString(p).replaceAll("[\\p{Punct}&&[^ ]|\\p{IsP}]", "");
+            this.loaded_path_lst.add(p);
+            return s;
         } catch (Exception e) {
             throw e;
         }
@@ -63,6 +78,6 @@ public class Preparation {
      * @return: spaceで分割した値
      */
     String[] Parse(String input) {
-        return input.split(" ");
+        return input.split("\\s+");
     }
 }

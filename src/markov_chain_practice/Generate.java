@@ -1,5 +1,6 @@
 package markov_chain_practice;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -11,6 +12,7 @@ public class Generate {
 
     // 乱数生成のため
     static final Random RANDOM = new Random();
+
     /**
      * 
      * @param leaned_data: 出現回数解析ずみのHashMap
@@ -49,6 +51,9 @@ public class Generate {
      */
     public String Next(String k) {
         var start = this.ProbabilityMap.get(k);
+        if (start == null) {
+            return ".";
+        }
         var w = get_sum(start);
         var pivot = RANDOM.nextLong(w);
 
@@ -62,19 +67,30 @@ public class Generate {
         return ".";
     }
 
+    public String randomStart() {
+        var keys = new ArrayList<>(this.ProbabilityMap.keySet());
+        var pivot = RANDOM.nextInt(keys.size());
+
+        return keys.get(pivot);
+    }
+
+    public Boolean checkExistWord(String s) {
+        return this.ProbabilityMap.containsKey(s);
+    }
+
     /**
      * 指定回数、Next()を用いて単語を生成して表示する
      * 
      * @param k: 現在の単語
      * @param c: 生成する単語数
      */
-    public void loopShow(String k, int c) {
+    public Integer loopShow(String k, int c, int cc) {
         if (c <= 0 || k.equals(".")) {
             System.out.printf(".\n");
-            return;
+            return cc;
         }
         System.out.printf("%s ", k);
-        loopShow(this.Next(k), c - 1);
+        return loopShow(this.Next(k), c - 1, cc + 1);
     }
 
     // 先頭の値の分母を取得して返す
