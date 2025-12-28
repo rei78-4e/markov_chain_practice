@@ -19,8 +19,6 @@ header-includes:
   - \renewenvironment{Shaded}{\begin{tcolorbox}[colback=gray!5, boxrule=0.5pt, colframe=gray!70, left=5pt, right=5pt, top=5pt, bottom=5pt]}{\end{tcolorbox}}
 ---
 
-# Markov chain practice java implement
-
 ## 概要
 
 このjavaプロジェクトは任意の英語文字列を学習し、マルコフ連鎖を用いて文を任意の単語数で生成するものです。
@@ -255,3 +253,4 @@ public class Probability {
 - N-gram (2階以上のマルコフ連鎖) への対応
 - 日本語などの形態素解析を必要とする言語への対応
 - 文生成終了条件の改善（句点での停止など）
+- 結果のファイルへの出力
