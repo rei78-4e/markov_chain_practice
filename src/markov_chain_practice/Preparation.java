@@ -6,10 +6,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 
-public class Preparation {
+abstract public class Preparation {
     // 分割された単語列
-    String[] input;
-    ArrayList<Path> loaded_path_lst;
+    public String input;
+    private ArrayList<Path> loaded_path_lst;
 
     /**
      * @param p: ソースファイルのパスリスト
@@ -18,22 +18,18 @@ public class Preparation {
     public Preparation(Path[] p) throws Exception {
         try {
             this.loaded_path_lst = new ArrayList<Path>();
-            this.input = this.Parse(this.get_some_input(p));
+            this.input = this.get_some_input(p);
         } catch (Exception e) {
             throw e;
         }
     }
 
-    public Integer LoadedWordsNum() {
-        return this.input.length;
+    public Integer LoadedWordsNum(String[] parsed) {
+        return parsed.length;
     }
 
     public ArrayList<Path> LoadedPathList() {
         return this.loaded_path_lst;
-    }
-
-    public String[] get_input() {
-        return this.input;
     }
 
     /**
@@ -72,11 +68,5 @@ public class Preparation {
         }
     }
 
-    /**
-     * @param input: 入力値
-     * @return: spaceで分割した値
-     */
-    String[] Parse(String input) {
-        return input.split("\\s+");
-    }
+    public abstract String[] Parse();
 }

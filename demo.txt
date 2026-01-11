@@ -1,0 +1,6 @@
+Between Describing the World and Maintaining Code
+if it describes this world with extreme accuracy, Class is a good tool. but class is too difficult for me to use with keep maintainable. in many cases developers lost parent class and override inexhaustibly. and languages are added new keywords to create restrictions.
+
+struct is not enough for description this world. but it’s balanced between accuracy and keeping maintainability(for me). so i think programming languages evolution is adding constraints and increase trust for computers and compilers.
+
+of course i like to languages that can describes accuracy this world. in academics these “right languages” should were used. but in industrial programming, i have to think about balance between accuracy and maintainability.

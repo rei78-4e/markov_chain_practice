@@ -16,6 +16,8 @@ public class Main {
 		// Scannerと全体でのエラーハンドリングのためtry
 		try {
 			var sc = new Scanner(System.in);
+			var is_jp = false;
+			// var use_custom = false;
 
 			// detasetの選択。数字以外(parse to intに失敗)だった場合はパスとして取得
 			System.out.println();
@@ -35,27 +37,33 @@ public class Main {
 
 			// 入力値がintに変換出来ればデフォルトのデータセットを選択
 			// 失敗すれば入力をそのままパスとして取り込む
-			var lst = parse_option(input)
-					.map(n -> {
-						try {
-							return switch (n) {
-								case 1 -> List.of(Path.of(default_pare().toString(), "normal.txt"));
-								case 2 -> List.of(Path.of(default_pare().toString(), "sf.txt"));
-								case 3 -> List.of(Path.of(default_pare().toString(), "shika.txt"));
-								case 4 -> List.of(Path.of(default_pare().toString(), "normal2.txt"));
-								default -> get_all_dataset_path();
-							};
-						} catch (Exception e) {
-							throw new RuntimeException(e);
-						}
-					}).orElse(List.of(Path.of(input)));
+			var is_numric = input.matches("\\d+");
+			var use_custom = !is_numric;
+
+			List<Path> lst = is_numric ? (switch (Integer.parseInt(input)) {
+
+				case 1 -> List.of(Path.of(default_pare().toString(), "normal.txt"));
+				case 2 -> List.of(Path.of(default_pare().toString(), "sf.txt"));
+				case 3 -> List.of(Path.of(default_pare().toString(), "shika.txt"));
+				case 4 -> List.of(Path.of(default_pare().toString(), "normal2.txt"));
+				default -> get_all_dataset_path();
+			}) : List.of(Path.of(input));
+
+			if (use_custom) {
+				System.out.printf("is Your source Japanese?(y/n)>");
+				if (sc.next().trim() == "y") {
+					is_jp = true;
+				}
+			}
 
 			System.out.printf("\n-----------------------------------------\n");
 			System.out.printf("[INFO] Loading dataset...\n");
 			// Preparationにてデータの取得と単語へのパースを行う
-			var parsed_data = new Preparation(lst.toArray(Path[]::new));
-			var loaded_num = parsed_data.LoadedWordsNum();
-			var loaded_path_lst = parsed_data.LoadedPathList();
+			var preparation_data = new PreparationEn(lst.toArray(Path[]::new));
+			var parsed_data = preparation_data.Parse();
+
+			var loaded_num = parsed_data.length;
+			var loaded_path_lst = preparation_data.LoadedPathList();
 			loaded_path_lst.forEach(ip -> {
 				System.out.printf("  - Path: %s\n", ip.toString());
 			});
@@ -66,7 +74,7 @@ public class Main {
 			System.out.printf("[PROCESS]\n");
 			System.out.printf("  - Analyzing loaded text...");
 			// Leaningにて各単語の出現回数をカウントしてベクトル的に格納
-			var leaned_data = new Learning(parsed_data.get_input());
+			var leaned_data = new Learning(parsed_data);
 			System.out.printf(" [DONE]\n");
 
 			// Generateにて出現回数から次単語の出現確率を各ベクトルに変換
@@ -127,6 +135,12 @@ public class Main {
 		}
 	}
 
+	/**
+	 * String sをintとしてparseし、parse出来ない場合はemptyとなるOptional値とする
+	 * 
+	 * @param s
+	 * @return Optional<Integer>
+	 */
 	static Optional<Integer> parse_option(String s) {
 		try {
 			return Optional.of(Integer.parseInt(s));
