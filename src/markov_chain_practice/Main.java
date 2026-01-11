@@ -25,6 +25,7 @@ public class Main {
 			System.out.println("-----------------------------------------");
 			System.out.println("Chose a dataset type:");
 
+      // 各数字とデフォルトのセットを対応
 			System.out.println("  0: [ALL] \t - Combine all available data");
 			System.out.println("  1: [NORMAL] \t - Starndard data set");
 			System.out.println("  2: [SF] \t - SF dataset");
@@ -37,11 +38,13 @@ public class Main {
 
 			// 入力値がintに変換出来ればデフォルトのデータセットを選択
 			// 失敗すれば入力をそのままパスとして取り込む
+      // "\\d+"は数値にマッチする。マッチしなければ数ではない
 			var is_numric = input.matches("\\d+");
+      // 数字でなければパスが直接入力されたということ
 			var use_custom = !is_numric;
 
+      // `?`演算子を用いて、`cond ? 数字の場合の処理 : パス入力の場合`
 			List<Path> lst = is_numric ? (switch (Integer.parseInt(input)) {
-
 				case 1 -> List.of(Path.of(default_pare().toString(), "normal.txt"));
 				case 2 -> List.of(Path.of(default_pare().toString(), "sf.txt"));
 				case 3 -> List.of(Path.of(default_pare().toString(), "shika.txt"));
@@ -49,6 +52,7 @@ public class Main {
 				default -> get_all_dataset_path();
 			}) : List.of(Path.of(input));
 
+      // カスタムソースのパスの場合は言語推定が出来てない(難しい)のでユーザーに質問
 			if (use_custom) {
 				System.out.printf("is Your source Japanese?(y/n)>");
 				if (sc.next().trim() == "y") {
@@ -59,7 +63,11 @@ public class Main {
 			System.out.printf("\n-----------------------------------------\n");
 			System.out.printf("[INFO] Loading dataset...\n");
 			// Preparationにてデータの取得と単語へのパースを行う
+      
+      // TODO: ここでis_jp変数の値によってPreparationJp(作って♡(~~面倒~~))と...Enクラスのコンストラクタを呼び出すようにして
 			var preparation_data = new PreparationEn(lst.toArray(Path[]::new));
+
+      // ここ以降はPreparation super classで抽象化してあるから変更不要
 			var parsed_data = preparation_data.Parse();
 
 			var loaded_num = parsed_data.length;
