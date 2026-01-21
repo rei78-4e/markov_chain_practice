@@ -67,13 +67,12 @@ public class Main {
       // TODO: ここでis_jp変数の値によってPreparationJp(作って♡(~~面倒~~))と...Enクラスのコンストラクタを呼び出すようにして
 			var preparation_data = new PreparationEn(lst.toArray(Path[]::new));  //
 			
-			var preparation_data2 = is_jp ?
-					new PreparationEn(lst.toArray(Path[]::new))
-				  : new PreparationJp(lst.toArray(Path[]::new));		//kaku
-			
       // ここ以降はPreparation super classで抽象化してあるから変更不要
 			var parsed_data = preparation_data.Parse();    //単語に分割したメソッドになる
 			
+			var preparation_data2 = is_jp ?
+					new PreparationEn(lst.toArray(Path[]::new))
+				  : new PreparationJp(lst.toArray(Path[]::new));		//kaku
 
 			var loaded_num = parsed_data.length;
 			var loaded_path_lst = preparation_data.LoadedPathList();
