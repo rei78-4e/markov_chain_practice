@@ -14,13 +14,90 @@ header-includes:
   - \usepackage[no-math, no-prompts]{luatexja-fontspec}
   - \usepackage{float}
   - \floatplacement{figure}{H}
-  - \usepackage{tcolorbox}
-  - \renewenvironment{Shaded}{\begin{tcolorbox}[colback=gray!5, boxrule=0.5pt, colframe=gray!70, left=5pt, right=5pt, top=5pt, bottom=5pt]}{\end{tcolorbox}}
+  - \usepackage[most]{tcolorbox}
+  - |
+    \renewenvironment{Shaded}{
+      \begin{tcolorbox}[
+        breakable,
+        enhanced jigsaw,
+        colback=gray!5,
+        boxrule=0.5pt,
+        colframe=gray!70,
+        left=5pt,
+        right=5pt,
+        top=5pt,
+        bottom=5pt,
+        arc=0pt,
+        outer arc=0pt
+      ]
+    }{
+      \end{tcolorbox}
+    }
+  - \usepackage{fvextra}
+  - \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
 ---
 
 ## 概要
 
 このjavaプロジェクトは任意の英語文字列を学習し、マルコフ連鎖を用いて文を任意の単語数で生成するものです。
+
+## 実行例
+
+一部個人情報
+
+```sh
+[STEP 1] Dataset Selection
+-----------------------------------------
+Chose a dataset type:
+  0: [ALL] 	 - Combine all available data
+  1: [NORMAL] 	 - Starndard data set
+  2: [SF] 	 - SF dataset
+  3: [SHIKA] 	 - shikanoko special dataset
+  4: [NORMAL2] 	 - Nature and Environment
+  [CUSTOM] 	 - custom dataset path (numbers prohibited)
+
+Select number (or input path)> 0
+
+-----------------------------------------
+[INFO] Loading dataset...
+  - Path: ~/Develop/Java/markov_chain_practice/dataset/normal.txt
+  - Path: ~/Develop/Java/markov_chain_practice/dataset/normal2.txt
+  - Path: ~/Develop/Java/markov_chain_practice/dataset/sf.txt
+  - Path: ~/Develop/Java/markov_chain_practice/dataset/shika.txt
+
+[OK] Loaded 6720 words successfully
+
+[PROCESS]
+  - Analyzing loaded text... [DONE]
+  - Calculating probablities... [DONE]
+
+-----------------------------------------
+Markov Chain Model is ready!
+-----------------------------------------
+
+[CONFIG]
+  - Dataset: normal.txt
+             normal2.txt
+             sf.txt
+             shika.txt
+
+How long to generate> 100
+Seed word ("***" or not found = random)> 
+How many generations?>
+
+[RESULT]
+-----------------------------------------
+
+astronauts conduct important final performance of hot noodles is much warmer climates where robots and created a silent wish for the children playing. A little boy found a beautiful song. The heavy rain. The quiet library has many secrets. The empty stone hallway yesterday. The old woman tells a thick book has many stars twinkle in the tree stands on the frozen time twice a hot sun. The open window of the steep mountain looks like bees and interdependencies. From the entire house often spends her mechanical spider built a treasure chest and Environment: Source Text for a field until .
+
+-----------------------------------------
+
+[STATUS]
+  - Words generated: 100
+  - Count: 1
+  - Status: Success
+  - Seed word: "astronauts"
+```
 
 ## プログラム解説
 
