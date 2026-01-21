@@ -2,8 +2,8 @@
 
 ```mermaid
 graph TD
-    Start([Start Program]) --> Input[User Input: Data Source]
-    Input --> Prep[Preparation: Read & Split Files]
+    Start([Start Program]) --> Input[User Input: Select Data Source]
+    Input --> Prep[Preparation: Read Files & Parse by words]
     Prep --> Learn[Leaning: Count Word Transitions]
     Learn --> Calc[Generate: Calculate Probabilities]
     Calc --> Len[User Input: Generation Length]

@@ -1,6 +1,6 @@
 ---
-title: "Markov chain practice java implement"
-subtitle: "Version: 0.1.0"
+title: "Markov chain practice java implement(個人)"
+subtitle: "Version: 0.1.1"
 author: "内山 航平 25A4111026"
 date: \today
 documentclass: ltjsarticle
@@ -14,7 +14,6 @@ header-includes:
   - \usepackage[no-math, no-prompts]{luatexja-fontspec}
   - \usepackage{float}
   - \floatplacement{figure}{H}
-  # コードブロックの装飾設定
   - \usepackage{tcolorbox}
   - \renewenvironment{Shaded}{\begin{tcolorbox}[colback=gray!5, boxrule=0.5pt, colframe=gray!70, left=5pt, right=5pt, top=5pt, bottom=5pt]}{\end{tcolorbox}}
 ---
@@ -244,13 +243,14 @@ public class Probability {
 ## 全体的な工夫点
 
 - **UI/UXの改善**: 処理ステップを明示し、詳細なステータスレポートを表示するようにした。
-- **堅牢なパース**: 正規表現(`\s+`, `replaceAll`)を用いることで、入力データのフォーマットの揺れに強くなった。
+- **堅牢なパース**: 正規表現(`\s+`)を用いることで、入力データのフォーマットの揺れに強くなった。
 - **柔軟なデータ入力**: メニュー選択と直接パス入力の両方に対応し、`java.nio.file.Path`を用いることでプラットフォーム間の互換性を高めた。
 - **文生成の拡張性**: 開始単語の指定や複数文の同時生成に対応した。
+- **ポリモーフィズムによる汎化**: `Preparation`classの継承による`.Parse()`メソッドの抽象化により、対応する学習データの言語の追加を容易に
 
-## Feature Works
+## 課題
 
-- N-gram (2階以上のマルコフ連鎖) への対応
+- 現在の1階推論では精度が良くないため、N-gram (2階以上のマルコフ連鎖) への対応
 - 日本語などの形態素解析を必要とする言語への対応
 - 文生成終了条件の改善（句点での停止など）
 - 結果のファイルへの出力
