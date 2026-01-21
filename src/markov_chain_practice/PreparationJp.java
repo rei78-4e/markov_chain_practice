@@ -22,6 +22,7 @@ public class PreparationJp extends Preparation{
         List<String> words = tokenizer.tokenize(text).stream()
                                       .map(Token::getSurface)
                                       .collect(Collectors.toList());
+        System.out.println(words);
         
 		return words.toArray(String[]::new);
     }
