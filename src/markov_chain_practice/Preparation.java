@@ -1,5 +1,4 @@
 // 解析前のデータ処理 入力ファイルの読み込みと単語分割を行う
-
 package markov_chain_practice;
 
 import java.nio.file.Files;
