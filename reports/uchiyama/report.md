@@ -1,6 +1,6 @@
 ---
-title: "Markov chain practice java implement(個人)"
-subtitle: "Version: 0.1.1"
+title: "自由制作課題 (個人)"
+subtitle: "Java Programming Practice: Markov Chain"
 author: "内山 航平 25A4111026"
 date: \today
 documentclass: ltjsarticle
@@ -12,6 +12,8 @@ geometry:
 pdf-engine: lualatex
 toc: true
 toc-title: 目次
+numbersections: true
+top-level-division: section
 header-includes:
   - \usepackage[no-math, no-prompts]{luatexja-fontspec}
   - \usepackage{float}
@@ -19,10 +21,11 @@ header-includes:
   - \usepackage[most]{tcolorbox}
   - \usepackage{fvextra}
   - \usepackage{etoolbox}
+  - \usepackage{setspace} # 行間制御に必要
   - \tcbuselibrary{breakable}
   # すべてのVerbatim系環境に一括で折り返し設定を適用
   - \fvset{breaklines=true, breakanywhere=true, breakindent=10pt, breaksymbolleft=\tiny\ensuremath{\hookrightarrow}}
-  # Shaded環境（コードの外枠）をシンプルに調整
+  # Shaded環境（コードの外枠）の再定義
   - |
     \renewenvironment{Shaded}{
       \begin{tcolorbox}[
@@ -37,7 +40,8 @@ header-includes:
         bottom=3pt,
         arc=0pt,
         outer arc=0pt,
-        fontupper=\footnotesize\ttfamily
+        fontupper=\footnotesize\ttfamily,
+        before upper=\setstretch{1.0} % コードブロック内だけ行間を1にする
       ]
     }{
       \end{tcolorbox}
@@ -48,9 +52,11 @@ header-includes:
 
 このjavaプロジェクトは任意の英語文字列を学習し、マルコフ連鎖を用いて文を任意の単語数で生成するものです。
 
+\newpage
+
 ## 実行例
 
-```sh
+```bash
 [STEP 1] Dataset Selection
 -----------------------------------------
 Chose a dataset type:
@@ -61,16 +67,13 @@ Chose a dataset type:
   4: [NORMAL2] 	 - Nature and Environment
   [CUSTOM] 	 - custom dataset path (numbers prohibited)
 
-Select number (or input path)> 0
+Select number (or input path)> 3
 
 -----------------------------------------
 [INFO] Loading dataset...
-  - Path: ~/Develop/Java/markov_chain_practice/dataset/normal.txt
-  - Path: ~/Develop/Java/markov_chain_practice/dataset/normal2.txt
-  - Path: ~/Develop/Java/markov_chain_practice/dataset/sf.txt
-  - Path: ~/Develop/Java/markov_chain_practice/dataset/shika.txt
+  - Path: /home/coyuki/Develop/Java/markov_chain_practice/dataset/shika.txt
 
-[OK] Loaded 6720 words successfully
+[OK] Loaded 14 words successfully
 
 [PROCESS]
   - Analyzing loaded text... [DONE]
@@ -81,28 +84,27 @@ Markov Chain Model is ready!
 -----------------------------------------
 
 [CONFIG]
-  - Dataset: normal.txt
-             normal2.txt
-             sf.txt
-             shika.txt
+  - Dataset: shika.txt
 
-How long to generate> 100
-Seed word ("***" or not found = random)> 
+How long to generate> 14
+Seed word ("***" or not found = random)>  し
 How many generations?>
 
 [RESULT]
 -----------------------------------------
 
-astronauts conduct important final performance of hot noodles is much warmer climates where robots and created a silent wish for the children playing. A little boy found a beautiful song. The heavy rain. The quiet library has many secrets. The empty stone hallway yesterday. The old woman tells a thick book has many stars twinkle in the tree stands on the frozen time twice a hot sun. The open window of the steep mountain looks like bees and interdependencies. From the entire house often spends her mechanical spider built a treasure chest and Environment: Source Text for a field until .
+し か の こ し か の こ し か の こ の こ .
 
 -----------------------------------------
 
 [STATUS]
-  - Words generated: 100
+  - Words generated: 14
   - Count: 1
   - Status: Success
-  - Seed word: "astronauts"
+  - Seed word: "し"
 ```
+
+\newpage
 
 ## プログラム解説
 
@@ -110,7 +112,27 @@ astronauts conduct important final performance of hot noodles is much warmer cli
 
 *下記の図はgeminiにソースコードを読ませて生成した図式である。
 
-![process of this project](./process.png){height=10cm}
+![process of this project](./resource/markov_text_gen.png)
+
+### ファイル構成
+
+```bash
+.
+├── dataset
+│   ├── normal.txt
+│   ├── normal2.txt
+│   ├── sf.txt
+│   └── shika.txt
+└── src
+    └── markov_chain_practice
+        ├── Generate.java
+        ├── InvalidInput.java
+        ├── Learning.java
+        ├── Main.java
+        ├── Preparation.java
+        ├── PreparationEn.java
+        └── Probability.java
+```
 
 ### Main.java
 
