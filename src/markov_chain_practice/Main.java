@@ -55,7 +55,7 @@ public class Main {
 			// カスタムソースのパスの場合は言語推定が出来てない(難しい)のでユーザーに質問
 			if (use_custom) {
 				System.out.printf("is Your source Japanese?(y/n)>");
-				if (sc.next().trim() == "y") {
+				if (sc.next().trim().equalsIgnoreCase("y")) {
 					is_jp = true;
 				}
 			}
