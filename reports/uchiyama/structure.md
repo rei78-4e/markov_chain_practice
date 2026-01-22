@@ -1,18 +1,21 @@
 ## Execution Flow
 
 ```mermaid
-graph TD
+graph LR
+    %% 全体のデフォルトスタイル（文字色を黒に、背景を薄い青に）
+    classDef default fill:#e1f5fe,stroke:#01579b,stroke-width:1px,color:#000000;
+
     Start([Start Program]) --> Input[User Input: Select Data Source]
     Input --> Prep[Preparation: Read Files & Parse by words]
     Prep --> Learn[Leaning: Count Word Transitions]
     Learn --> Calc[Generate: Calculate Probabilities]
     Calc --> Len[User Input: Generation Length]
-    Len --> Loop{Generation Loop}
-    Loop --> Next[Next: Select Random Next Word]
-    Next --> Show[Display Word]
-    Show --> Decr{Remaining Count > 0?}
-    Decr -- Yes --> Loop
-    Decr -- No --> End([End Program])
+    Len --> Gen{Generation Loop}
+    Gen --> End([End Program])
+
+    %% 開始と終了だけ少し色を濃くして区別しやすくする場合（不要なら削除してください）
+    style Start fill:#b3e5fc,stroke:#01579b,stroke-width:2px,color:#000000
+    style End fill:#b3e5fc,stroke:#01579b,stroke-width:2px,color:#000000
 ```
 
 ## Linear Process Steps

@@ -45,23 +45,25 @@ style: |
 
 <div class="toc">
 
-- [1. Main ソースコード(内山 担当)](#1-main-ソースコード内山-担当)
-- [1.1. メインロジック](#11-メインロジック)
-- [2. PreparationJp(日本語対応) (今 担当)](#2-preparationjp日本語対応-今-担当)
-- [2.1. Preparationを継承した日本語用のデータ準備クラス](#21-preparationを継承した日本語用のデータ準備クラス)
-- [3. Probability (内山 担当)](#3-probability-内山-担当)
-- [4. Learning (内山 担当)](#4-learning-内山-担当)
-- [4.1. HashMapを用いた単語予測](#41-hashmapを用いた単語予測)
-- [5. Generate (内山 担当)](#5-generate-内山-担当)
-- [5.1. 再帰関数を用いたリアルタイム出力](#51-再帰関数を用いたリアルタイム出力)
-- [5.2. Generate 結果](#52-generate-結果)
-- [ソースコードについて](#ソースコードについて)
-
+- [1. Main.java ソースコード(内山 担当)](#1-mainjava-ソースコード内山-担当)
+  - [1.1. メインロジック](#11-メインロジック)
+  - [1.2. ロジック図解](#12-ロジック図解)
+- [2. Preparation.java (今/内山 担当)](#2-preparationjava-今内山-担当)
+  - [2.1. Preparationを継承した英語クラス(内山)](#21-preparationを継承した英語クラス内山)
+  - [2.2. Preparationを継承した日本語クラス(今)](#22-preparationを継承した日本語クラス今)
+- [3. Probability.java (内山 担当)](#3-probabilityjava-内山-担当)
+- [4. Learning.java (内山 担当)](#4-learningjava-内山-担当)
+  - [4.1. HashMapを用いた単語予測](#41-hashmapを用いた単語予測)
+- [5. Generate.java (内山 担当)](#5-generatejava-内山-担当)
+  - [5.1. 再帰関数を用いたリアルタイム出力](#51-再帰関数を用いたリアルタイム出力)
+  - [5.2. Generate 結果](#52-generate-結果)
+- [6. InvalidInput.java](#6-invalidinputjava)
+- [7. ソースコードについて](#7-ソースコードについて)
 </div>
 
 ---
 
-## 1. Main ソースコード(内山 担当)
+## 1. Main.java ソースコード(内山 担当)
 
 <div class="columns">
 <div>
@@ -78,34 +80,113 @@ style: |
 
 ---
 
-### 1.1. メインロジック
+### 1.1. ソースマップ
+
+```bash
+.
+├── dataset
+│   ├── normal.txt
+│   ├── normal2.txt
+│   ├── sf.txt
+│   └── shika.txt
+├── lib
+│   ├── kuromoji-core-0.9.0.jar
+│   └── kuromoji-ipadic-0.9.0.jar
+├── notes.md
+├── README.md
+└── src
+    └── markov_chain_practice
+        ├── Generate.java
+        ├── InvalidInput.java
+        ├── Learning.jav
+        ├── Main.java
+        ├── Preparation.java
+        ├── PreparationEn.java
+        ├── PreparationJp.java
+        └── Probability.java
+```
+
+---
+
+### 1.2. メインロジック
 - 主に`Preparation`,`Leaning`,`Generate`を用いてクラスにデータを変換していく
 - それぞれのクラスは単一の責任を持つように設計し、処理の差し替えを容易化
 - 全体的にCUIでも読みやすいように空行を用いたり`---`などの記号で可読性を向上
 
 ---
 
-## 2. PreparationJp(日本語対応) (今 担当)
+### 1.2. ロジック図解
+
+![](./img/markov_text_gen.png)
+
+---
+
+## 2. Preparation.java (今/内山 担当)
 
 <div class="columns">
+
+<div>
+
+![](./img/pre.png)
+
+</div>
+
+<div>
+
+### 入力データの下準備
+
+パスからファイル内容の取得と、正規表現を用いた不要な空白や空行の除去、および単語分割を行う。
+
+</div>
+
+</div>
+
+---
+
+### 2.1. Preparationを継承した英語クラス(内山)
+
+<div class="columns">
+
+<div>
+
+![](./img/preEn.png)
+
+</div>
+
+<div>
+
+- `Parse()`メソッドをオーバーライドして英語の用のパースを(スペース分割)
+- それ以外の処理はすべて親クラスに依存
+
+</div>
+
+</div>
+
+---
+
+### 2.2. Preparationを継承した日本語クラス(今)
+
+<div class="columns">
+
 <div>
 
 ![](./img/PreJp.png)
 
 </div>
+
 <div>
 
-### 2.1. Preparationを継承した日本語用のデータ準備クラス
 - `Parse()`メソッドをオーバーライドすることで日本語特有の単語分割に処理を置き換え
 - それ以外の処理はすべて親クラスに依存
 - Kkuromoji libを利用することで意味的な日本語の単語分割を実現
 
 </div>
+
 </div>
 
 ---
 
-## 3. Probability (内山 担当)
+## 3. Probability.java (内山 担当)
 
 <div class="columns">
 <div>
@@ -123,7 +204,7 @@ style: |
 
 --- 
 
-## 4. Learning (内山 担当)
+## 4. Learning.java (内山 担当)
 
 <div class="columns">
 <div>
@@ -143,7 +224,7 @@ style: |
 
 --- 
 
-## 5. Generate (内山 担当)
+## 5. Generate.java (内山 担当)
 
 <div class="columns">
 <div>
@@ -173,7 +254,25 @@ style: |
 
 ---
 
-## ソースコードについて
+## 6. InvalidInput.java
+
+<div class="columns">
+
+<div>
+
+![](./img/error.png)
+
+</div>
+
+<div>
+入力エラーなどの定義。
+</div>
+
+</div>
+
+---
+
+## 7. ソースコードについて
 
 現在githubのprivate repositoryにソースコード全体がアップロードされています。
 uliboulibo@gmail.comにgithubアカウントのidと共にご連絡頂ければ、こちらでrepositoryに招待し、ソースコードを閲覧できるようにいたします。

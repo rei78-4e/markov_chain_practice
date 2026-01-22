@@ -64,7 +64,8 @@ public class Main {
 			System.out.printf("[INFO] Loading dataset...\n");
 
 			// Preparationにてデータの取得と単語へのパースを行う
-			var preparation_data = is_jp ? new PreparationJp(lst.toArray(Path[]::new)) : new PreparationEn(lst.toArray(Path[]::new));
+			var preparation_data = is_jp ? new PreparationJp(lst.toArray(Path[]::new))
+					: new PreparationEn(lst.toArray(Path[]::new));
 
 			// ここ以降はPreparation super classで抽象化してあるから変更不要
 			var parsed_data = preparation_data.Parse(); // 単語に分割したメソッドになる
