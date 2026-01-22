@@ -11,3 +11,7 @@ var preparation_data = is_jp ? new PreparationEn(lst.toArray(Path[]::new))
 
 javaの仕様変更によるものだった。
 .classxxxを編集して修正
+
+## 授業で使った（習った）制御構文などを使わなかった
+
+swichやvar(型推論)など授業で扱わなかった処理を積極的に扱った、これは良くも悪くもjavaらしくないコードになった。
