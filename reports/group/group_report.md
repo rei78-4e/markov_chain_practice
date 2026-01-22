@@ -9,6 +9,14 @@ style: |
   section {
     display: flex;
     flex-direction: column;
+    font-family: 'Helvetica Neue', Arial, 'Noto Sans JP', 'Meiryo', sans-serif;
+  }
+  h1 {
+    font-family: 'Yu Mincho', 'Hiragino Mincho ProN', serif;
+    color: #333;
+  }
+  section.title h1 {
+    font-size: 50px;
   }
   .columns {
     display: flex;
@@ -32,6 +40,14 @@ style: |
   .toc li {
     font-size: 24px; /* 必要に応じて調整 */
     margin-bottom: 8px;
+  }
+  code {
+    background: #f4f4f4;
+    padding: 2px 4px;
+    border-radius: 4px;
+  }
+  footer {
+    left: 40px;
   }
 ---
 
@@ -59,6 +75,7 @@ style: |
   - [5.2. Generate 結果](#52-generate-結果)
 - [6. InvalidInput.java](#6-invalidinputjava)
 - [7. ソースコードについて](#7-ソースコードについて)
+
 </div>
 
 ---
@@ -69,6 +86,7 @@ style: |
 <div>
 
 ![](./img/main1.png)
+
 </div>
 
 <div>
@@ -109,6 +127,7 @@ style: |
 ---
 
 ### 1.2. メインロジック
+
 - 主に`Preparation`,`Leaning`,`Generate`を用いてクラスにデータを変換していく
 - それぞれのクラスは単一の責任を持つように設計し、処理の差し替えを容易化
 - 全体的にCUIでも読みやすいように空行を用いたり`---`などの記号で可読性を向上
@@ -189,17 +208,20 @@ style: |
 ## 3. Probability.java (内山 担当)
 
 <div class="columns">
+
 <div>
 
 ![](./img/probability.png)
 
 </div>
+
 <div>
 
 - 確率情報を分数として保持するためのクラス
 - 小数点数で保持すると精度の問題で厳密でなくなるため、分数として保持することに
 
 </div>
+
 </div>
 
 --- 
@@ -207,11 +229,13 @@ style: |
 ## 4. Learning.java (内山 担当)
 
 <div class="columns">
+
 <div>
 
 ![](./img/lean.png)
 
 </div>
+
 <div>
 
 ### 4.1. HashMapを用いた単語予測
