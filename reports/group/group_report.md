@@ -94,7 +94,7 @@ style: |
 ![](./img/main2.png)
 
 </div>
-<div>
+</div>
 
 ---
 
@@ -299,4 +299,5 @@ style: |
 ## 7. ソースコードについて
 
 現在githubのprivate repositoryにソースコード全体がアップロードされています。
-uliboulibo@gmail.comにgithubアカウントのidと共にご連絡頂ければ、こちらでrepositoryに招待し、ソースコードを閲覧できるようにいたします。
+Discord(ulibo_4) or uliboulibo@gmail.comにgithubアカウントのidと共にご連絡頂ければ、こちらでrepositoryに招待し、ソースコードを閲覧できるようにいたします。
+
